@@ -1,0 +1,92 @@
+###############################################################################
+###############################################################################
+###############################################################################
+#
+#   Exception Unit Test
+#
+###############################################################################
+###############################################################################
+###############################################################################
+
+
+#
+# Test getting and setting the real variable data bool in EX subsystem
+#
+GetVariableData
+SetVariableData false
+GetVariableData
+SetVariableData true
+GetVariableData
+SetVariableData false
+GetVariableData
+
+#
+# Test Stl Exception
+#
+ThrowStlException "some stl error"
+
+#
+# Test the built-in EX_ASSERT macro
+#
+assert
+
+#
+# Test the built-in EX_PRECONDITION macro
+#
+precondition
+
+#
+# Test nesting a EX_Win32Exception inside a FileOpenException
+#
+clearException
+createFileOpenException "dummy file.txt"
+asstring
+getname
+
+#
+# Test cloning
+#
+Clone
+Log "this is a test message"
+
+#
+# Make sure cloning copies all members in derived classes
+#
+DataExceptionClone 69 "bill and ted's excellent adventure"
+
+
+#######################################################
+# Stack batck trace tests
+#######################################################
+
+# show the stack back trace
+stack
+
+# show stack back trace with a nested exception
+StackWithNesting 4
+
+#######################################################
+# D'tor catch and log tests
+#######################################################
+
+# should throw and log in dtor
+ThrowInDtor false
+
+# should throw and log in dtor, and MajorException should get caught in utEx
+ThrowInDtor true
+
+# should throw and log in dtor
+ThrowInDtorStl false
+
+# should throw and log in dtor, and StlException should get caught in utEx
+ThrowInDtorStl true
+
+clearException
+NestException
+ThrowNestedException
+
+clearException
+
+??
+
+exit

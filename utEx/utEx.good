@@ -1,0 +1,200 @@
+Win32::InitializeCriticalSection() stub called.
+###############################################################################
+###############################################################################
+###############################################################################
+#
+#   Exception Unit Test
+#
+###############################################################################
+###############################################################################
+###############################################################################
+
+
+#
+# Test getting and setting the real variable data bool in EX subsystem
+#
+GetVariableData
+true
+SetVariableData false
+GetVariableData
+false
+SetVariableData true
+GetVariableData
+true
+SetVariableData false
+GetVariableData
+false
+
+#
+# Test Stl Exception
+#
+ThrowStlException "some stl error"
+Win32::EnterCriticalSection() stub called.
+<date and time suppressed> - utEx::TestCommands
+StlException : STL Exception "some stl error"
+    at utEx::TestCommands (utex.cpp:0)
+
+Win32::LeaveCriticalSection() stub called.
+
+#
+# Test the built-in EX_ASSERT macro
+#
+assert
+Win32::EnterCriticalSection() stub called.
+<date and time suppressed> - utEx::TestCommands
+Assert : Assert( "Compare( 1, 2 )" ) failed in file utEx::TestCommands (utex.cpp:0)
+    at utEx::TestCommands (utex.cpp:0)
+
+Win32::LeaveCriticalSection() stub called.
+
+#
+# Test the built-in EX_PRECONDITION macro
+#
+precondition
+Win32::EnterCriticalSection() stub called.
+<date and time suppressed> - utEx::TestCommands
+Precondition : Precondition( "Compare( 1, 2 )" ) failed in file utEx::TestCommands (utex.cpp:0)
+    at utEx::TestCommands (utex.cpp:0)
+
+Win32::LeaveCriticalSection() stub called.
+
+#
+# Test nesting a EX_Win32Exception inside a FileOpenException
+#
+clearException
+createFileOpenException "dummy file.txt"
+asstring
+FileOpenException : Can't open "dummy file.txt"
+Caused by: Win32Exception : Call to ::CreateFile() failed with (2) The system cannot find the file specified.
+getname
+FileOpenException
+
+#
+# Test cloning
+#
+Clone
+FileOpenException : Can't open "dummy file.txt"
+Caused by: Win32Exception : Call to ::CreateFile() failed with (2) The system cannot find the file specified.
+Log "this is a test message"
+Win32::EnterCriticalSection() stub called.
+<date and time suppressed> - this is a test message
+FileOpenException : Can't open "dummy file.txt"
+Caused by: Win32Exception : Call to ::CreateFile() failed with (2) The system cannot find the file specified.
+
+Win32::LeaveCriticalSection() stub called.
+
+#
+# Make sure cloning copies all members in derived classes
+#
+DataExceptionClone 69 "bill and ted's excellent adventure"
+orginal DataException : DataException should contain intValue = 69 stringValue = "bill and ted's excellent adventure"
+clone DataException : DataException should contain intValue = 69 stringValue = "bill and ted's excellent adventure"
+original's m_intValue = 69
+clone's m_intValue = 69
+original's m_stringValue = "bill and ted's excellent adventure"
+clone's m_stringValue = "bill and ted's excellent adventure"
+
+
+#######################################################
+# Stack batck trace tests
+#######################################################
+
+# show the stack back trace
+stack
+Win32::EnterCriticalSection() stub called.
+<date and time suppressed> - utEx::TestCommands
+Assert : Assert( "Ex::False()" ) failed in file f3 (utex.cpp:0)
+    at utEx::TestCommands (utex.cpp:0)
+    at f1 (utex.cpp:0)
+    at f2 (utex.cpp:0)
+    at f3 (utex.cpp:0)
+
+Win32::LeaveCriticalSection() stub called.
+
+# show stack back trace with a nested exception
+StackWithNesting 4
+Win32::EnterCriticalSection() stub called.
+<date and time suppressed> - ShowStackWithNesting() caught exception
+NestedException : Description of Nested exception
+    at ShowStackWithNesting1 (utex.cpp:0)
+    at ShowStackWithNesting1 (utex.cpp:0)
+    at ShowStackWithNesting1 (utex.cpp:0)
+    at ShowStackWithNesting1 (utex.cpp:0)
+Caused by: Assert : Assert( "Ex::False()" ) failed in file f3 (utex.cpp:0)
+    at f1 (utex.cpp:0)
+    at f2 (utex.cpp:0)
+    at f3 (utex.cpp:0)
+
+Win32::LeaveCriticalSection() stub called.
+
+#######################################################
+# D'tor catch and log tests
+#######################################################
+
+# should throw and log in dtor
+ThrowInDtor false
+Win32::EnterCriticalSection() stub called.
+<date and time suppressed> - ThrowInDtor::~ThrowInDtor
+AnException : AnException
+
+Win32::LeaveCriticalSection() stub called.
+
+# should throw and log in dtor, and MajorException should get caught in utEx
+ThrowInDtor true
+Win32::EnterCriticalSection() stub called.
+<date and time suppressed> - ThrowInDtor::~ThrowInDtor
+AnException : AnException
+
+Win32::LeaveCriticalSection() stub called.
+Win32::EnterCriticalSection() stub called.
+<date and time suppressed> - utEx::TestCommands
+AnException : AnException
+    at utEx::TestCommands (utex.cpp:0)
+
+Win32::LeaveCriticalSection() stub called.
+
+# should throw and log in dtor
+ThrowInDtorStl false
+Win32::EnterCriticalSection() stub called.
+<date and time suppressed> - ThrowInDtor::~ThrowInDtor
+AnException : AnException
+
+Win32::LeaveCriticalSection() stub called.
+
+# should throw and log in dtor, and StlException should get caught in utEx
+ThrowInDtorStl true
+Win32::EnterCriticalSection() stub called.
+<date and time suppressed> - ThrowInDtor::~ThrowInDtor
+AnException : AnException
+
+Win32::LeaveCriticalSection() stub called.
+Win32::EnterCriticalSection() stub called.
+<date and time suppressed> - utEx::TestCommands
+StlException : STL Exception "bad allocation"
+    at utEx::TestCommands (utex.cpp:0)
+
+Win32::LeaveCriticalSection() stub called.
+
+clearException
+NestException
+ThrowNestedException
+Win32::EnterCriticalSection() stub called.
+<date and time suppressed> - utEx::TestCommands
+NestedException : Description of Nested exception
+    at utEx::TestCommands (utex.cpp:0)
+Caused by: AnException : AnException
+
+Win32::LeaveCriticalSection() stub called.
+
+clearException
+
+??
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+            Documented Derived Commands
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+No specific command help available for this unit test.
+
+
+exit
+Win32::DeleteCriticalSection() stub called.

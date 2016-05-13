@@ -1,0 +1,65 @@
+###############################################################################
+###############################################################################
+###############################################################################
+#
+#   Logger Unit Test
+#
+###############################################################################
+###############################################################################
+###############################################################################
+
+SetVariableData false
+
+#
+# Test logging to the default logger (the one that is created if one doesn't
+# exist). Expecting a MessageBoxLogger.
+#
+Log "This is a test message"
+
+#
+# Test logging to a new MessageBoxLogger with an application name.
+#
+NewMessageBoxLogger "United Online"
+SetDefaultLogger MessageBox
+Log "This is a test message"
+
+#
+# Test logging to a new ConsoleLogger.
+#
+NewConsoleLogger
+SetDefaultLogger Console
+Log "This is a test message to the console logger"
+
+#
+# Test logging to a new MessageBoxLogger with a different application name.
+#
+NewMessageBoxLogger "NetZero"
+SetDefaultLogger MessageBox
+Log "This is a test message for the new message box logger"
+
+#
+# Test logging to another ConsoleLogger. This will call the dtor for the
+# current ConsoleLogger.
+#
+NewConsoleLogger
+SetDefaultLogger Console
+Log "This is a test message to the latest console logger"
+
+#
+# Test GetDefaultLogger
+#
+GetDefaultLogger
+
+#
+# Test Assert to try out the integration with the Exception framework using all
+# the loggers.
+#
+NewMessageBoxLogger "ASSERT"
+SetDefaultLogger MessageBox
+assert
+
+NewConsoleLogger
+SetDefaultLogger Console
+assert
+
+exit

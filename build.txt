@@ -1,0 +1,8 @@
+[Build C++]
+"Ex.sln" "Debug"
+"Ex.sln" "Release"
+
+[Tests]
+"utEx" "hh.cfg"
+"utLogger" "hh.cfg"
+

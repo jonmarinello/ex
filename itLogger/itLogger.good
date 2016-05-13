@@ -1,0 +1,73 @@
+###############################################################################
+###############################################################################
+###############################################################################
+#
+#   Logger Unit Test
+#
+###############################################################################
+###############################################################################
+###############################################################################
+
+SetVariableData true
+
+#
+# Test logging to the default logger (the one that is created if one doesn't
+# exist). Expecting a MessageBoxLogger.
+#
+Log "This is a test message"
+
+#
+# Test logging to a new MessageBoxLogger with an application name.
+#
+NewMessageBoxLogger "United Online"
+SetDefaultLogger MessageBox
+Log "This is a test message"
+
+#
+# Test logging to a new ConsoleLogger.
+#
+NewConsoleLogger
+SetDefaultLogger Console
+Log "This is a test message to the console logger"
+9/6/2004 20:47:45 gmt - This is a test message to the console logger
+
+
+#
+# Test logging to a new MessageBoxLogger with a different application name.
+#
+NewMessageBoxLogger "NetZero"
+SetDefaultLogger MessageBox
+Log "This is a test message for the new message box logger"
+
+#
+# Test logging to another ConsoleLogger. This will call the dtor for the
+# current ConsoleLogger.
+#
+NewConsoleLogger
+SetDefaultLogger Console
+Log "This is a test message to the latest console logger"
+9/6/2004 20:47:46 gmt - This is a test message to the latest console logger
+
+
+#
+# Test GetDefaultLogger
+#
+GetDefaultLogger
+
+#
+# Test Assert to try out the integration with the Exception framework using all
+# the loggers.
+#
+NewMessageBoxLogger "ASSERT"
+SetDefaultLogger MessageBox
+assert
+
+NewConsoleLogger
+SetDefaultLogger Console
+assert
+9/6/2004 20:47:46 gmt - utLogger::TestCommands
+Assert : Assert( "Ex::False()" ) failed in file utLogger::TestCommands (\src\Clients\Windows\Shared\Ex\utLogger\utLogger.cpp:52)
+    at utLogger::TestCommands (\src\Clients\Windows\Shared\Ex\utLogger\utLogger.cpp:124)
+
+
+exit
